@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+    <TextView
+        android:id="@+id/user_balance"
+        android:layout_width="383dp"
+        android:layout_height="311dp"
+        android:layout_marginBottom="16dp"
+        android:text="Balance: $0.00"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/exchange_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="328dp"
+        android:layout_marginBottom="16dp"
+        android:hint="Enter amount"
+        android:inputType="numberDecimal" />
+
+    <Spinner
+        android:id="@+id/currency_from_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="400dp"
+        android:layout_marginBottom="8dp" />
+
+    <Spinner
+        android:id="@+id/currency_to_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/currency_from_spinner"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/submit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="504dp"
+        android:layout_marginEnd="153dp"
+        android:text="Submit" />
+
+</RelativeLayout>
