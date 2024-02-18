@@ -4,6 +4,10 @@
     <string name="submit">Submit</string>
     <string name="enter_amount">Enter_Amount</string>
     <string name="select_currency">Select Currency</string>
+    <string name="balance_0_00">Balance: $0.00</string>
+    <string name="exchange_rate">Exchange Rate:</string>
+    <string name="from">From:</string>
+    <string name="to">To:</string>
     <string-array name="currencies">
         <item>AED</item>
         <item>AFN</item>

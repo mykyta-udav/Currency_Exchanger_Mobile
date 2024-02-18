@@ -3,6 +3,8 @@ package com.example.curexch;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -72,11 +74,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (!amountStr.isEmpty()) {
             BigDecimal amount = new BigDecimal(amountStr);
-            fetchExchangeRate(fromCurrency, toCurrency, amount);
+            exchangeCurrency(fromCurrency, toCurrency, amount);
         }
     }
 
-    private void fetchExchangeRate(String fromCurrency, String toCurrency, BigDecimal amount) {
+    private void exchangeCurrency(String fromCurrency, String toCurrency, BigDecimal amount) {
         CurrencyExchangeService service = RetrofitClientInstance.getRetrofitInstance().create(CurrencyExchangeService.class);
         Call<ExchangeRateResponse> call = service.getExchangeRate(fromCurrency, toCurrency, "6d7c2cbb14-68b7cb6d8e-s8qt62");
 
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (currentBalance.compareTo(amountToExchange) < 0) {
                         showInsufficientFundsMessage(fromCurrency);
-                        return; // Abort the operation
+                        return;
                     }
                     updateUserBalance(fromCurrency, toCurrency, amountToExchange, exchangedAmount);
                     showTransactionSummary(fromCurrency, toCurrency, amount, exchangedAmount);
@@ -107,6 +109,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    private void fetchExchangeRates(String fromCurrency, String toCurrency) {
+        CurrencyExchangeService service = RetrofitClientInstance.getRetrofitInstance().create(CurrencyExchangeService.class);
+        Call<ExchangeRateResponse> call = service.getExchangeRate(fromCurrency, toCurrency, "6d7c2cbb14-68b7cb6d8e-s8qt62");
+
+        call.enqueue(new Callback<ExchangeRateResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ExchangeRateResponse> call, @NonNull Response<ExchangeRateResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    BigDecimal exchangeRate = BigDecimal.valueOf(response.body().getResult().get(toCurrency));
+                    runOnUiThread(() -> {
+                        TextView exchangeRateTextView = findViewById(R.id.exchangeRateTextView);
+                        exchangeRateTextView.setText(String.format(Locale.getDefault(), "Exchange Rate: %s", exchangeRate.toPlainString()));
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ExchangeRateResponse> call, @NonNull Throwable t) {
+                // Handle failure
+            }
+        });
+    }
+
 
     private void updateUserBalance(String fromCurrency, String toCurrency, BigDecimal subtractAmount, BigDecimal addAmount) {
         BigDecimal fromBalance = userBalances.getOrDefault(fromCurrency, BigDecimal.ZERO);
@@ -150,5 +177,30 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(() -> Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show());
     }
 
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private final Runnable updateRatesTask = new Runnable() {
+        @Override
+        public void run() {
+            Spinner fromCurrencySpinner = findViewById(R.id.currency_from_spinner);
+            Spinner toCurrencySpinner = findViewById(R.id.currency_to_spinner);
 
+            String fromCurrency = fromCurrencySpinner.getSelectedItem().toString();
+            String toCurrency = toCurrencySpinner.getSelectedItem().toString();
+
+            fetchExchangeRates(fromCurrency, toCurrency);
+            handler.postDelayed(this, 5000);
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        handler.post(updateRatesTask);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        handler.removeCallbacks(updateRatesTask);
+    }
 }

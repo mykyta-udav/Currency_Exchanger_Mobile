@@ -11,7 +11,7 @@
         android:layout_width="383dp"
         android:layout_height="311dp"
         android:layout_marginBottom="16dp"
-        android:text="Balance: $0.00"
+        android:text="@string/balance_0_00"
         android:textSize="20sp" />
 
     <EditText
@@ -21,23 +21,27 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="328dp"
         android:layout_marginBottom="16dp"
-        android:hint="Enter amount"
+        android:hint="@string/enter_amount"
         android:inputType="numberDecimal" />
 
     <Spinner
         android:id="@+id/currency_from_spinner"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="400dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="402dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginBottom="8dp" />
 
     <Spinner
         android:id="@+id/currency_to_spinner"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/currency_from_spinner"
-        android:layout_marginTop="13dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginBottom="16dp" />
 
     <Button
@@ -47,8 +51,42 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="504dp"
-        android:layout_marginEnd="153dp"
-        android:text="Submit" />
+        android:layout_marginTop="556dp"
+        android:layout_marginEnd="135dp"
+        android:text="Submit"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/exchangeRateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="511dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/exchange_rate"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="57dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="403dp"
+        android:layout_marginEnd="30dp"
+        android:layout_toStartOf="@+id/currency_from_spinner"
+        android:text="@string/from"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="454dp"
+        android:layout_marginEnd="30dp"
+        android:layout_toStartOf="@+id/currency_to_spinner"
+        android:text="@string/to"
+        android:textSize="16sp" />
 
 </RelativeLayout>
